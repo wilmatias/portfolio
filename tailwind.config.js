@@ -12,16 +12,14 @@ export default {
     theme: {
       	extend: {
             colors: {
-                'custom-primaryBG': '#fff',
-                'custom-secondaryBG': '#f4f6f8',
-                
-                'custom-primaryTEXT': '#666',
-                'custom-secondaryTEXT': '#333',
-                'custom-darkmode': '#fef',
+                'dark-text': '#e4e6eb',
+                'dark-text-link': '#f1a802',
+                'dark-text-hed': '#808080',
 
-                'custom-fontSizeSM': '12px',
-                'custom-fontSizeMD': '16px',
-                'custom-fontSizeLG': '20px',
+                'dark-bg': '#100f15',
+                'dark-bg-sec': '#1b1b23',
+                
+                'dark-btn': '#f1a802',
             },
         },
     },
