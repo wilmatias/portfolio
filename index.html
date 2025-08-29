@@ -1,13 +1,464 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + Vue + TS</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wilard Marquez Matias - Full-Stack Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Animated Background -->
+        <div class="animated-background">
+            <div class="tech-icons">
+                <div class="tech-icon" v-for="(tech, index) in techStack" :key="index" :style="tech.style">
+                    <i :class="tech.icon"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-brand" @click="animateBrand">
+                    <span class="brand-text" ref="brandText">&lt;/Wil&gt;</span>
+                    <div class="brand-cursor">|</div>
+                </div>
+                <ul class="nav-menu" :class="{ active: showMobileMenu }">
+                    <li><a href="#home" @click="scrollTo('home')" :class="{ active: activeSection === 'home' }">Home</a></li>
+                    <li><a href="#about" @click="scrollTo('about')" :class="{ active: activeSection === 'about' }">About</a></li>
+                    <li><a href="#experience" @click="scrollTo('experience')" :class="{ active: activeSection === 'experience' }">Experience</a></li>
+                    <li><a href="#skills" @click="scrollTo('skills')" :class="{ active: activeSection === 'skills' }">Skills</a></li>
+                    <li><a href="#integrations" @click="scrollTo('integrations')" :class="{ active: activeSection === 'integrations' }">Integrations</a></li>
+                    <li><a href="#projects" @click="scrollTo('projects')" :class="{ active: activeSection === 'projects' }">Projects</a></li>
+                    <li><a href="#contact" @click="scrollTo('contact')" :class="{ active: activeSection === 'contact' }">Contact</a></li>
+                </ul>
+                <div class="nav-toggle" @click="toggleMobileMenu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="greeting">Hello, I'm</span>
+                    <span class="name">Wilard Marquez Matias</span>
+                </h1>
+                <h2 class="hero-subtitle">Full-Stack Developer & IT Specialist</h2>
+                <p class="hero-description">
+                    Results-driven developer with 7+ years of experience in building scalable applications 
+                    and leading development teams across web, cloud, and enterprise systems.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn btn-primary" @click="scrollTo('contact')">Get In Touch</a>
+                    <a href="#about" class="btn btn-secondary" @click="scrollTo('about')">Learn More</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="container">
+                <h2 class="section-title">About Me</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <h3>Objective</h3>
+                        <p>{{ objective }}</p>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>{{ contactInfo.email }}</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <span>{{ contactInfo.phone }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <h4>7+</h4>
+                            <p>Years Experience</p>
+                        </div>
+                        <div class="stat-item">
+                            <h4>50+</h4>
+                            <p>Projects Completed</p>
+                        </div>
+                        <div class="stat-item">
+                            <h4>15+</h4>
+                            <p>Technologies</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="experience">
+            <div class="container">
+                <h2 class="section-title">Professional Experience</h2>
+                
+                <!-- Desktop Vertical Timeline -->
+                <div class="timeline desktop-timeline">
+                    <div class="timeline-item" v-for="(job, index) in experience" :key="index">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h3>{{ job.company }}</h3>
+                            <h4>{{ job.position }}</h4>
+                            <span class="timeline-date">{{ job.period }}</span>
+                            <ul>
+                                <li v-for="(responsibility, idx) in job.responsibilities" :key="idx">
+                                    {{ responsibility }}
+                                </li>
+                            </ul>
+                            <div class="tech-tags">
+                                <span v-for="(tech, idx) in job.technologies" :key="idx" class="tech-tag">
+                                    {{ tech }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mobile Horizontal Timeline -->
+                <div class="horizontal-timeline mobile-timeline">
+                    <div class="horizontal-timeline-line"></div>
+                    <div class="horizontal-timeline-container">
+                        <div class="horizontal-timeline-track" 
+                             :style="{ transform: `translateX(-${currentExperienceSlide * 100}%)` }"
+                             @touchstart="handleTouchStart($event, 'experience')"
+                             @touchmove="handleTouchMove($event)"
+                             @touchend="handleTouchEnd($event)">
+                            <div class="timeline-card" v-for="(job, index) in experience" :key="index">
+                                <div class="timeline-card-marker"></div>
+                                <div class="timeline-card-content">
+                                    <h3>{{ job.company }}</h3>
+                                    <h4>{{ job.position }}</h4>
+                                    <span class="timeline-date">{{ job.period }}</span>
+                                    <ul>
+                                        <li v-for="(responsibility, idx) in job.responsibilities" :key="idx">
+                                            {{ responsibility }}
+                                        </li>
+                                    </ul>
+                                    <div class="tech-tags">
+                                        <span v-for="(tech, idx) in job.technologies" :key="idx" class="tech-tag">
+                                            {{ tech }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Carousel Controls -->
+                    <div class="carousel-controls mobile-only">
+                        <button class="carousel-btn prev" @click="prevExperience" :disabled="currentExperienceSlide === 0">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="carousel-btn next" @click="nextExperience" :disabled="currentExperienceSlide === experience.length - 1">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Dots Indicator -->
+                    <div class="carousel-dots mobile-only">
+                        <span class="dot" 
+                              v-for="(job, index) in experience" 
+                              :key="index" 
+                              :class="{ active: currentExperienceSlide === index }"
+                              @click="goToExperienceSlide(index)">
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="skills">
+            <div class="container">
+                <h2 class="section-title">Skills & Technologies</h2>
+                
+                <!-- Desktop Grid Layout -->
+                <div class="skills-grid">
+                    <div class="skill-category" v-for="(category, index) in skillCategories" :key="index">
+                        <h3>{{ category.name }}</h3>
+                        <div class="skill-items">
+                            <div class="skill-item" v-for="(skill, idx) in category.skills" :key="idx">
+                                <i :class="skill.icon"></i>
+                                <span>{{ skill.name }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mobile Carousel Layout -->
+                <div class="carousel-container">
+                    <div class="carousel-wrapper">
+                        <div class="carousel-track" 
+                             ref="skillsCarousel" 
+                             :style="{ transform: `translateX(-${currentSkillSlide * 100}%)` }"
+                             @touchstart="handleTouchStart($event, 'skills')"
+                             @touchmove="handleTouchMove($event)"
+                             @touchend="handleTouchEnd($event)">
+                            <div class="skill-category carousel-slide" v-for="(category, index) in skillCategories" :key="index">
+                                <h3>{{ category.name }}</h3>
+                                <div class="skill-items">
+                                    <div class="skill-item" v-for="(skill, idx) in category.skills" :key="idx">
+                                        <i :class="skill.icon"></i>
+                                        <span>{{ skill.name }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-controls mobile-only">
+                            <button class="carousel-btn prev" @click="prevSkill" :disabled="currentSkillSlide === 0">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="carousel-btn next" @click="nextSkill" :disabled="currentSkillSlide === skillCategories.length - 1">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="carousel-dots mobile-only">
+                        <div class="dot" 
+                             v-for="(category, index) in skillCategories" 
+                             :key="index"
+                             :class="{ active: currentSkillSlide === index }"
+                             @click="goToSkillSlide(index)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Integrations Section -->
+        <section id="integrations" class="integrations">
+            <div class="container">
+                <h2 class="section-title">Third-Party Integrations</h2>
+                
+                <!-- Desktop Grid Layout -->
+                <div class="integrations-grid">
+                    <div class="integration-category" v-for="(category, index) in integrations" :key="index">
+                        <div class="integration-header">
+                            <div class="integration-icon">
+                                <i :class="category.icon"></i>
+                            </div>
+                            <h3>{{ category.name }}</h3>
+                        </div>
+                        <div class="integration-items">
+                            <div class="integration-item" v-for="(integration, idx) in category.items" :key="idx">
+                                <div class="integration-logo">
+                                    <i :class="integration.icon"></i>
+                                </div>
+                                <div class="integration-info">
+                                    <h4>{{ integration.name }}</h4>
+                                    <p>{{ integration.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mobile Carousel Layout -->
+                <div class="carousel-container">
+                    <div class="carousel-wrapper">
+                        <div class="carousel-track" 
+                             :style="{ transform: `translateX(-${currentIntegrationSlide * 100}%)` }"
+                             @touchstart="handleTouchStart($event, 'integrations')"
+                             @touchmove="handleTouchMove($event)"
+                             @touchend="handleTouchEnd($event)">
+                            <div class="integration-category carousel-slide" v-for="(category, index) in integrations" :key="index">
+                                <div class="integration-header">
+                                    <div class="integration-icon">
+                                        <i :class="category.icon"></i>
+                                    </div>
+                                    <h3>{{ category.name }}</h3>
+                                </div>
+                                <div class="integration-items">
+                                    <div class="integration-item" v-for="(integration, idx) in category.items" :key="idx">
+                                        <div class="integration-logo">
+                                            <i :class="integration.icon"></i>
+                                        </div>
+                                        <div class="integration-info">
+                                            <h4>{{ integration.name }}</h4>
+                                            <p>{{ integration.description }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-controls mobile-only">
+                            <button class="carousel-btn prev" @click="prevIntegration" :disabled="currentIntegrationSlide === 0">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="carousel-btn next" @click="nextIntegration" :disabled="currentIntegrationSlide === integrations.length - 1">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="carousel-dots mobile-only">
+                        <div class="dot" 
+                             v-for="(category, index) in integrations" 
+                             :key="index"
+                             :class="{ active: currentIntegrationSlide === index }"
+                             @click="goToIntegrationSlide(index)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="projects">
+            <div class="container">
+                <h2 class="section-title">Selected Projects</h2>
+                
+                <!-- Desktop Grid Layout -->
+                <div class="projects-grid">
+                    <div class="project-card" v-for="(project, index) in projects" :key="index">
+                        <div class="project-icon">
+                            <i :class="project.icon"></i>
+                        </div>
+                        <h3>{{ project.name }}</h3>
+                        <p>{{ project.description }}</p>
+                        <div class="project-tech">
+                            <span v-for="(tech, idx) in project.technologies" :key="idx" class="tech-tag">
+                                {{ tech }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mobile Carousel Layout -->
+                <div class="carousel-container">
+                    <div class="carousel-wrapper">
+                        <div class="carousel-track" 
+                             :style="{ transform: `translateX(-${currentProjectSlide * 100}%)` }"
+                             @touchstart="handleTouchStart($event, 'projects')"
+                             @touchmove="handleTouchMove($event)"
+                             @touchend="handleTouchEnd($event)">
+                            <div class="project-card carousel-slide" v-for="(project, index) in projects" :key="index">
+                                <div class="project-icon">
+                                    <i :class="project.icon"></i>
+                                </div>
+                                <h3>{{ project.name }}</h3>
+                                <p>{{ project.description }}</p>
+                                <div class="project-tech">
+                                    <span v-for="(tech, idx) in project.technologies" :key="idx" class="tech-tag">
+                                        {{ tech }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-controls mobile-only">
+                            <button class="carousel-btn prev" @click="prevProject" :disabled="currentProjectSlide === 0">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="carousel-btn next" @click="nextProject" :disabled="currentProjectSlide === projects.length - 1">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="carousel-dots mobile-only">
+                        <div class="dot" 
+                             v-for="(project, index) in projects" 
+                             :key="index"
+                             :class="{ active: currentProjectSlide === index }"
+                             @click="goToProjectSlide(index)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2 class="section-title">Get In Touch</h2>
+                <div class="contact-content">
+                    <div class="contact-info-section">
+                        <h3>Let's work together</h3>
+                        <p>I'm always interested in new opportunities and exciting projects. Feel free to reach out!</p>
+                        <div class="contact-methods">
+                            <a href="mailto:wilardmatias.work@gmail.com" class="contact-method">
+                                <i class="fas fa-envelope"></i>
+                                <span>wilardmatias.work@gmail.com</span>
+                            </a>
+                            <a href="tel:+639168705957" class="contact-method">
+                                <i class="fas fa-phone"></i>
+                                <span>+63 916 870 5957</span>
+                            </a>
+                        </div>
+                    </div>
+                    <form class="contact-form" @submit.prevent="submitForm">
+                        <div class="form-group">
+                            <input 
+                                type="text" 
+                                v-model="form.name" 
+                                placeholder="Your Name" 
+                                required
+                                :class="{ error: errors.name }"
+                            >
+                            <span v-if="errors.name" class="error-message">{{ errors.name }}</span>
+                        </div>
+                        <div class="form-group">
+                            <input 
+                                type="email" 
+                                v-model="form.email" 
+                                placeholder="Your Email" 
+                                required
+                                :class="{ error: errors.email }"
+                            >
+                            <span v-if="errors.email" class="error-message">{{ errors.email }}</span>
+                        </div>
+                        <div class="form-group">
+                            <input 
+                                type="text" 
+                                v-model="form.subject" 
+                                placeholder="Subject" 
+                                required
+                                :class="{ error: errors.subject }"
+                            >
+                            <span v-if="errors.subject" class="error-message">{{ errors.subject }}</span>
+                        </div>
+                        <div class="form-group">
+                            <textarea 
+                                v-model="form.message" 
+                                placeholder="Your Message" 
+                                rows="5" 
+                                required
+                                :class="{ error: errors.message }"
+                            ></textarea>
+                            <span v-if="errors.message" class="error-message">{{ errors.message }}</span>
+                        </div>
+                        <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
+                            <span v-if="isSubmitting">Sending...</span>
+                            <span v-else>Send Message</span>
+                        </button>
+                        <div v-if="submitMessage" class="submit-message" :class="submitStatus">
+                            {{ submitMessage }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2025 Wilard Marquez Matias. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script src="script.js"></script>
+</body>
 </html>
