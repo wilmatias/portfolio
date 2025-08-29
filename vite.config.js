@@ -11,7 +11,11 @@ export default defineConfig({
       input: {
         main: './index.html'
       }
-    }
+    },
+    // Ensure public assets are copied
+    copyPublicDir: true,
+    // Add additional files to copy
+    assetsInlineLimit: 0, // Don't inline assets
   },
   server: {
     port: 3000, // Dev server port
