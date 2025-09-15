@@ -75,18 +75,18 @@ createApp({
                         'Oversee code reviews, manual testing, and deployment',
                         'Contribute to full-stack development using modern frameworks'
                     ],
-                    technologies: ['Vue 3', 'React', 'TypeScript', 'Tailwind', 'Laravel', 'MySQL', 'Firebase', 'AWS', 'GCP']
+                    technologies: ['Vue 3', 'React', 'Pinia', 'zustand', 'TypeScript', 'Tailwind', 'MySQL', 'Firebase', 'AWS', 'GCP', 'Docker', 'Git', 'Zapier', 'Pabbly']
                 },
                 {
                     company: 'LIVE700 Software Inc',
-                    position: 'Full-stack Developer',
+                    position: 'Senior Full-stack Developer',
                     period: 'Apr 2024 – Nov 2024',
                     responsibilities: [
                         'Built crypto trading & mining platform with secure backend & frontend',
                         'Deployed and managed on IIS cloud server',
                         'Delivered frontend modules and API integrations'
                     ],
-                    technologies: ['Vue 3', 'ASP.Net Core', 'Tailwind', 'Node.js', 'C#', 'MySQL']
+                    technologies: ['Vue 3', 'Pinia', 'ASP.Net Core', 'Tailwind', 'Node.js', 'C#', 'MySQL', 'Alibaba', 'SVN']
                 },
                 {
                     company: 'LIVE700 Software Inc',
@@ -96,7 +96,19 @@ createApp({
                         'Developed frontend for Live700 web chat app and HRIS platform',
                         'Built API endpoints & automated testing (frontend + API)'
                     ],
-                    technologies: ['Vue', 'Pinia', 'Laravel', 'MySQL']
+                    technologies: ['Vue', 'Pinia', 'Pinia', 'Laravel', 'MySQL', 'Git']
+                },
+                {
+                    company: 'V-unite Inc',
+                    position: 'Junior Full-stack Developer',
+                    period: 'Jan 2024 – June 2024',
+                    responsibilities: [
+                        'Developed LMS & Virtual Showroom platform (V-unite)',
+                        'Migrated legacy PHP codebase to Laravel backend',
+                        'Maintained and enhanced existing features based on user feedback',
+                        'Collaborated with cross-functional teams for seamless deployment and updates'
+                    ],
+                    technologies: ['Vue', 'Pinia', 'PHP', 'Java', 'MySQL', 'Git']
                 },
                 {
                     company: 'NBGroup',
@@ -107,7 +119,7 @@ createApp({
                         'Designed and implemented APIs with Redux Saga',
                         'Guided junior developers, conducted code reviews, and managed task distribution'
                     ],
-                    technologies: ['React', 'Redux Saga', 'Ant Design', 'Bootstrap']
+                    technologies: ['React', 'Redux Saga', 'Ant Design', 'Bootstrap', 'SVN']
                 },
                 {
                     company: 'Freelance',
@@ -118,7 +130,7 @@ createApp({
                         'Handled deployments on Heroku & AWS, including Dockerized apps',
                         'Collaborated with clients on feature requests, bug fixes, and QA testing'
                     ],
-                    technologies: ['Vue', 'Angular', 'PHP', 'Laravel', 'Node.js', 'MongoDB', 'MySQL']
+                    technologies: ['Vue', 'Angular', 'CodeIgniter', 'Node.js', 'MongoDB', 'MySQL', 'Heroku', 'AWS', 'Docker']
                 },
                 {
                     company: 'AllValue Holding Corp',
@@ -299,13 +311,13 @@ createApp({
                     name: 'LakbayHub',
                     description: 'All-in-one B2B2C travel booking platform providing comprehensive travel solutions for agents and end customers with integrated booking management.',
                     icon: 'fas fa-globe-asia',
-                    technologies: ['Vue 3', 'Laravel', 'TypeScript', 'Tailwind', 'MySQL', 'AWS', 'Payment APIs']
+                    technologies: ['Vue 3', 'Pinia', 'TypeScript', 'Tailwind', 'CodeIgniter', 'Node.Js', 'MySQL', 'AWS', 'Payment APIs']
                 },
                 {
                     name: 'LakbayNow',
                     description: 'Advanced B2B2C travel booking system with real-time inventory management, multi-supplier integration, and seamless booking experience.',
                     icon: 'fas fa-rocket',
-                    technologies: ['Vue 3', 'React', 'Laravel', 'Firebase', 'Travel APIs', 'Payment Gateways', 'GCP']
+                    technologies: ['Angular', 'Node.Js', 'Firebase', 'Travel APIs', 'Payment Gateways', 'GCP']
                 },
                 {
                     name: 'ISELCO Online Electric Meter Application',
@@ -329,7 +341,7 @@ createApp({
                     name: 'PCMS Public Safety Division',
                     description: 'Violation reporting & monitoring system for public safety with real-time tracking and analytics.',
                     icon: 'fas fa-shield-alt',
-                    technologies: ['Angular', 'Laravel', 'MySQL', 'Real-time Updates']
+                    technologies: ['Angular', 'CodeIgniter', 'MySQL', 'Real-time Updates']
                 },
                 {
                     name: 'V-unite Virtual Showroom & LMS',
@@ -341,7 +353,7 @@ createApp({
                     name: 'Crypto Trading & Mining Platform',
                     description: 'Secure cryptocurrency trading platform with mining capabilities and real-time market data integration.',
                     icon: 'fab fa-bitcoin',
-                    technologies: ['Vue 3', 'ASP.Net Core', 'C#', 'WebSocket', 'IIS']
+                    technologies: ['Vue 3', 'Pinia', 'ASP.Net Core', 'C#', 'WebSocket', 'IIS']
                 }
             ]
         }
@@ -710,6 +722,25 @@ createApp({
                 this.submitMessage = '';
                 this.submitStatus = '';
             }, 5000);
+        },
+        
+        // Download CV method as fallback
+        downloadCV() {
+            try {
+                // Create a temporary link element
+                const link = document.createElement('a');
+                link.href = './Wilard Marquez Matias.pdf';
+                link.download = 'Wilard_Marquez_Matias_CV.pdf';
+                
+                // Append to body, click, and remove
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (error) {
+                console.error('Download failed:', error);
+                // Fallback to opening in new tab
+                window.open('./Wilard Marquez Matias.pdf', '_blank');
+            }
         }
     },
     
